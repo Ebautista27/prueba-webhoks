@@ -1,0 +1,46 @@
+Aquí tienes un resumen de todos los endpoints configurados en tu aplicación backend:
+
+Endpoints de Autenticación con GitHub
+Estos endpoints son parte del flujo de autenticación OAuth2 con GitHub.
+
+Endpoint: /auth/github
+
+Método HTTP: GET
+
+Descripción: Este es el punto de entrada para iniciar el proceso de autenticación con GitHub. Cuando un usuario accede a esta URL, tu backend lo redirige a la página de inicio de sesión y autorización de GitHub.
+
+Endpoint: /auth/github/callback
+
+Método HTTP: GET
+
+Descripción: Esta es la URL de retorno (callback) a la que GitHub redirige al usuario después de que ha iniciado sesión y autorizado tu aplicación. Tu backend recibe un código de autorización de GitHub aquí, lo intercambia por un token de acceso, genera un JWT y lo establece como una cookie HttpOnly en el navegador del usuario.
+
+Endpoint: /auth/failure
+
+Método HTTP: GET
+
+Descripción: Esta ruta es el destino si el proceso de autenticación con GitHub falla por alguna razón (por ejemplo, el usuario deniega la autorización). Actualmente, solo devuelve un mensaje simple de "Fallo la autenticación".
+
+Endpoints de Usuario Autenticado
+Este endpoint requiere que el usuario esté previamente autenticado.
+
+Endpoint: /auth/me
+
+Método HTTP: GET
+
+Descripción: Esta ruta está protegida por el middleware de autenticación (requireAuth). Si un usuario autenticado (con un JWT válido en su cookie HttpOnly) accede a esta URL, el backend decodifica el token y devuelve la información del perfil del usuario (la que se guardó en el JWT).
+
+Endpoint Principal
+Endpoint: /
+
+Método HTTP: GET
+
+Descripción: La ruta raíz de tu servidor. Actualmente, solo devuelve un mensaje de confirmación de que el servidor está funcionando.
+
+Notas importantes:
+
+Todas las rutas bajo /auth son manejadas por el authRoutes que importas en server.js con app.use('/auth', authRoutes);.
+
+El JWT se guarda en una cookie HttpOnly, lo que significa que el frontend no puede acceder a él directamente, pero el navegador lo enviará automáticamente en las peticiones a tu backend (como a /auth/me).
+
+Espero que esta lista te sea muy útil para ti y tu bro. ¡Así tendrán una referencia clara de la API de tu backend!
